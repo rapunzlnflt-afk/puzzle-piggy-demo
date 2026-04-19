@@ -2475,6 +2475,16 @@ async function doRemoveUser(id) {
 
 // ---- Init ----
 async function init() {
+  // Demo mode: always start fresh
+  try {
+    const delReq = indexedDB.deleteDatabase('PuzzlePigDB');
+    await new Promise((resolve, reject) => {
+      delReq.onsuccess = resolve;
+      delReq.onerror = resolve; // continue even if delete fails
+      delReq.onblocked = resolve;
+    });
+  } catch(e) {}
+
   await openDB();
 
   // Demo: auto-seed test data
